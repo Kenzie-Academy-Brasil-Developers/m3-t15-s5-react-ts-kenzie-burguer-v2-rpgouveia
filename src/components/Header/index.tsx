@@ -27,13 +27,14 @@ function Header() {
             <div className='buttons'>
               <button
                 type='button'
-                onClick={() => {
-                  openModal();
-                }}
+                onClick={openModal}
               >
                 <MdShoppingCart size={28} />
               </button>
-              <button type='button' onClick={userLogout}>
+              <button 
+                type='button'
+                onClick={userLogout}
+              >
                 <MdLogout size={28} />
               </button>
             </div>

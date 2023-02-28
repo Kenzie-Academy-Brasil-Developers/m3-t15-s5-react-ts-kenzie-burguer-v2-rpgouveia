@@ -19,9 +19,7 @@ function CartModal() {
           <button
             type='button'
             aria-label='Fechar'
-            onClick={() => {
-              closeModal();
-            }}
+            onClick={closeModal}
           >
             <MdClose size={21} />
           </button>
