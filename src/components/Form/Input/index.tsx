@@ -1,10 +1,11 @@
 import { StyledTextField } from '../../../styles/form';
 import { StyledParagraph } from '../../../styles/typography';
+import { iInput } from '../../../interfaces/@types';
 
-const Input = () => (
+const Input = ({ label, type, placeholder, register, errors }: iInput) => (
   <fieldset>
-    <StyledTextField label='Teste' type='text' />
-    <StyledParagraph fontColor='red'>Erro</StyledParagraph>
+    <StyledTextField label={label} type={type} placeholder={placeholder} {...register} />
+    {errors ? <StyledParagraph fontColor='red'>{errors.message}</StyledParagraph> : null}
   </fieldset>
 );
 
