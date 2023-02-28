@@ -4,18 +4,25 @@ import { StyledProductList } from './style';
 import { CartContext } from '../../providers/CartContext';
 
 function ProductList() {
-  const { products } = useContext(CartContext);
-
+  const { filteredProducts } = useContext(CartContext);
 
   // Efeito de Atualização: Monitoramento da Lista de Produtos
   useEffect(() => {
-    console.log(products);
-    
-  }, [products])
+    console.log(filteredProducts);
+
+  }, [filteredProducts])
 
   return (
     <StyledProductList>
-      {products.map(product => <ProductCard key={product.id} product={product}/>)}
+      {filteredProducts.map(product =>
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          name={product.name}
+          category={product.category}
+          price={product.price}
+          img={product.img}
+        />)}
     </StyledProductList>
   )
 };

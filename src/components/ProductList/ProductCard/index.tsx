@@ -1,10 +1,12 @@
+import { useContext } from 'react';
 import { StyledProductCard } from './style';
 import { StyledButton } from '../../../styles/button';
 import { StyledParagraph, StyledTitle } from '../../../styles/typography';
-import { iProductCard } from '../../../interfaces/@types';
+import { iProduct } from '../../../interfaces/@types';
+import { CartContext } from '../../../providers/CartContext';
 
-function ProductCard({product}: iProductCard) {
-  const { name, price, category, img } = product;
+function ProductCard({id, name, price, category, img}: iProduct) {
+  const { addProductToCart } = useContext(CartContext)
 
   return (
     <StyledProductCard>
@@ -17,7 +19,11 @@ function ProductCard({product}: iProductCard) {
         </StyledTitle>
         <StyledParagraph className='category'>{category}</StyledParagraph>
         <StyledParagraph className='price'>R$ {price}</StyledParagraph>
-        <StyledButton $buttonSize='medium' $buttonStyle='green'>
+        <StyledButton 
+          $buttonSize='medium' 
+          $buttonStyle='green'
+          onClick={() => addProductToCart(id)}
+        >
           Adicionar
         </StyledButton>
       </div>

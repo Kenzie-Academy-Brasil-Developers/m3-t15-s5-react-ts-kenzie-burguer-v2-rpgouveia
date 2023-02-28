@@ -21,7 +21,10 @@ export interface iCartContext {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     openModal: () => void;
     closeModal: () => void;
-    products: iProduct[];
+    addProductToCart: (productId: number) => void;
+    removeProductFromCart: (productId: number) => void;
+    removeAllProductsFromCart: () => void;
+    filteredProducts: iProduct[];
 };
 
 // Interface do usuário
@@ -61,15 +64,4 @@ export interface iProduct {
     category: string;
     price: number;
     img: string;
-};
-
-// Interface do Cartão do Produto para Lista
-export interface iProductCard {
-    product: {
-        id?: number;
-        name: string;
-        category: string;
-        price: number;
-        img: string;
-    };
 };
