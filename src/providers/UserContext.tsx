@@ -1,11 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { iFormLoginValues, iFormRegisterValues, iUser, iUserContext, iUserProvider } from "../interfaces/@types";
+import { iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
 import { api } from "../services/api";
 
 export const UserContext = createContext({} as iUserContext);
 
-function UserProvider({ children }: iUserProvider) {
+function UserProvider({ children }: iContextProvider) {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<iUser | null>(null);
     const navigate = useNavigate();

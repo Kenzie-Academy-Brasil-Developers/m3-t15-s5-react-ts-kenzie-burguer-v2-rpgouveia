@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 // Interface do Provider
-export interface iUserProvider {
+export interface iContextProvider {
     children: ReactNode;
 };
 
@@ -14,6 +14,13 @@ export interface iUserContext {
     userRegister: (formData: iFormRegisterValues) => Promise<void>;
     userLogin: (formData: iFormLoginValues) => Promise<void>;
     userLogout: () => void;
+};
+
+export interface iCartContext {
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    openModal: () => void;
+    closeModal: () => void;
 };
 
 // Interface do usuário
@@ -35,10 +42,7 @@ export interface iFormRegisterValues {
 };
 
 // Interface do Formulário de Login
-export interface iFormLoginValues {
-    email: string;
-    password: string;
-};
+export type iFormLoginValues = Omit<iFormRegisterValues, 'name' | 'confirmPassword'>
 
 // Interface do Input
 export interface iInput {
