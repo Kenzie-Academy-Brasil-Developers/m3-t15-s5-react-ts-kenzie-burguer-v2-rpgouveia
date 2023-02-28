@@ -68,6 +68,7 @@ function UserProvider({ children }: iContextProvider) {
         } catch (error) {
             console.log(error);
             // Futuro Toast de Falha Aqui!
+            // Verificar como usar error.response.data
         } finally {
             setLoading(false);
         };
