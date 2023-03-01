@@ -26,6 +26,8 @@ export interface iCartContext {
     removeAllProductsFromCart: () => void;
     setSearch: React.Dispatch<React.SetStateAction<string>>;
     filteredProducts: iProduct[];
+    currentSale: iProduct[];
+    cartTotal: number;
 };
 
 // Interface do usuário

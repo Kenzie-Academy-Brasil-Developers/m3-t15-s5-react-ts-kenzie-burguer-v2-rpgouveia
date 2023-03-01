@@ -99,6 +99,8 @@ function CartProvider({ children }: iContextProvider) {
             removeAllProductsFromCart,
             setSearch,
             filteredProducts,
+            currentSale,
+            cartTotal
         }}
         >
             {children}

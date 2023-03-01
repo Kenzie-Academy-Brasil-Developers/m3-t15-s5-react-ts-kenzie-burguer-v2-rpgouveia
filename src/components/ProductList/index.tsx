@@ -1,16 +1,10 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import ProductCard from './ProductCard';
 import { StyledProductList } from './style';
 import { CartContext } from '../../providers/CartContext';
 
 function ProductList() {
   const { filteredProducts } = useContext(CartContext);
-
-  // Efeito de Atualização: Monitoramento da Lista de Produtos
-  useEffect(() => {
-    console.log(filteredProducts);
-
-  }, [filteredProducts])
 
   return (
     <StyledProductList>
