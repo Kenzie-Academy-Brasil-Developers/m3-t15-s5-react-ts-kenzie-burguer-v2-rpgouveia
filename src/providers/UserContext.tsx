@@ -1,6 +1,8 @@
+import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
+import { toast } from 'react-toastify';
+import { iAutoLoginResponse, iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
 import { api } from "../services/api";
 
 export const UserContext = createContext({} as iUserContext);
@@ -8,6 +10,7 @@ export const UserContext = createContext({} as iUserContext);
 function UserProvider({ children }: iContextProvider) {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<iUser | null>(null);
+    const [autoLoginUser, setAutoLoginUser] = useState<iAutoLoginResponse | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,16 +24,14 @@ function UserProvider({ children }: iContextProvider) {
                             Authorization: `Bearer ${token}`,
                         }
                     };
-                    const response = await api.get(`/users/${userId}`, config);
-                    setUser(response.data);
+                    const response = await api.get<iAutoLoginResponse>(`/users/${userId}`, config);
+                    setAutoLoginUser(response.data);
                     navigate('/shop');
                 } catch (error) {
-                    console.log(error);
                     localStorage.removeItem('@TOKEN');
                     localStorage.removeItem('USERID');
                 };
             } else {
-                // Proteção de rota, trocar por outlet
                 navigate('/')
             }
         };
@@ -40,16 +41,21 @@ function UserProvider({ children }: iContextProvider) {
     async function userRegister(formData: iFormRegisterValues) {
         try {
             setLoading(true)
-            const response = await api.post('/users', formData);
-            setUser(response.data.user);
+            const response = await api.post<iUser>('/users', formData);
             localStorage.setItem('@TOKEN', response.data.accessToken);
             localStorage.setItem('@USERID', response.data.user.id);
-            // Futuro Toast de Sucesso Aqui!
-            console.log('Cadastro realizado com sucesso!');
+            toast.success('Cadastro realizado com sucesso!')
             navigate('/shop');
         } catch (error) {
-            console.log(error);
-            // Futuro Toast de Falha Aqui!
+            if (axios.isAxiosError(error)) {
+                if (error.response?.data === 'Email already exists') {
+                    toast.error('Email já existe')
+                } else if (error.response?.data === 'Password is too short') {
+                    toast.error('Senha é muito pequena')
+                } else {
+                    toast.error('Email e Senha são obrigatórios')
+                }
+            }
         } finally {
             setLoading(false);
         };
@@ -58,17 +64,22 @@ function UserProvider({ children }: iContextProvider) {
     async function userLogin(formData: iFormLoginValues) {
         try {
             setLoading(true);
-            const response = await api.post('/login', formData);
-            setUser(response.data.user);
+            const response = await api.post<iUser>('/login', formData);
+            setUser(response.data);
             localStorage.setItem('@TOKEN', response.data.accessToken);
             localStorage.setItem('@USERID', response.data.user.id);
-            // Futuro Toast de Sucesso Aqui!
-            console.log('Login realizado com sucesso!');
+            toast.success('Login realizado com sucesso!')
             navigate('/shop');
         } catch (error) {
-            console.log(error);
-            // Futuro Toast de Falha Aqui!
-            // Verificar como usar error.response.data
+            if (axios.isAxiosError(error)) {
+                if (error.response?.data === 'Email and password are required') {
+                    toast.error('Email e Senha são obrigatórios')
+                } else if (error.response?.data === 'Incorrect password') {
+                    toast.error('Senha incorreta')
+                } else {
+                    toast.error('Usuário não encontrado')
+                }
+            }
         } finally {
             setLoading(false);
         };
