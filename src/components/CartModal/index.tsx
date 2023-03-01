@@ -1,38 +1,42 @@
 import { MdClose } from 'react-icons/md';
+import { useContext } from 'react';
 import CartProductList from './CartProductList';
 
 import { StyledCartModalBox } from './style';
 import { StyledParagraph, StyledTitle } from '../../styles/typography';
+import { CartContext } from '../../providers/CartContext';
 
-const CartModal = () => (
-  <StyledCartModalBox>
-    <dialog>
-      <header>
-        <StyledTitle tag='h2' $fontSize='three'>
-          Carrinho de compras
-        </StyledTitle>
-        <button
-          type='button'
-          aria-label='Fechar'
-          onClick={() => {
-            console.log('Lógica aqui');
-          }}
-        >
-          <MdClose size={21} />
-        </button>
-      </header>
-      <div className='cartBox'>
-        <CartProductList />
+function CartModal() {
+  const { closeModal, currentSale } = useContext(CartContext)
 
-        <div className='emptyBox'>
-          <StyledTitle tag='h3' $fontSize='three' textAlign='center'>
-            Sua sacola está vazia
+  return (
+    <StyledCartModalBox>
+      <dialog onClose={closeModal}>
+        <header>
+          <StyledTitle tag='h2' $fontSize='three'>
+            Carrinho de compras
           </StyledTitle>
-          <StyledParagraph textAlign='center'>Adicione itens</StyledParagraph>
+          <button
+            type='button'
+            aria-label='Fechar'
+            onClick={closeModal}
+          >
+            <MdClose size={21} />
+          </button>
+        </header>
+        <div className='cartBox'>
+          {currentSale.length ? (<CartProductList />) : (
+            <div className='emptyBox'>
+              <StyledTitle tag='h3' $fontSize='three' textAlign='center'>
+                Sua sacola está vazia
+              </StyledTitle>
+              <StyledParagraph textAlign='center'>Adicione itens</StyledParagraph>
+            </div>
+          )}
         </div>
-      </div>
-    </dialog>
-  </StyledCartModalBox>
-);
+      </dialog>
+    </StyledCartModalBox>
+  )
+};
 
 export default CartModal;

@@ -1,10 +1,24 @@
+import { useContext } from 'react';
 import ProductCard from './ProductCard';
 import { StyledProductList } from './style';
+import { CartContext } from '../../providers/CartContext';
 
-const ProductList = () => (
-  <StyledProductList>
-    <ProductCard />
-  </StyledProductList>
-);
+function ProductList() {
+  const { filteredProducts } = useContext(CartContext);
+
+  return (
+    <StyledProductList>
+      {filteredProducts.map(product =>
+        <ProductCard
+          key={product.id}
+          id={product.id}
+          name={product.name}
+          category={product.category}
+          price={product.price}
+          img={product.img}
+        />)}
+    </StyledProductList>
+  )
+};
 
 export default ProductList;
