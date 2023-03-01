@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { InputHTMLAttributes, ReactNode } from "react";
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
 // Interface do Provider
@@ -24,6 +24,7 @@ export interface iCartContext {
     addProductToCart: (productId: number) => void;
     removeProductFromCart: (productId: number) => void;
     removeAllProductsFromCart: () => void;
+    setSearch: React.Dispatch<React.SetStateAction<string>>;
     filteredProducts: iProduct[];
 };
 
@@ -65,3 +66,14 @@ export interface iProduct {
     price: number;
     img: string;
 };
+
+// Interface do Valor do Input Search
+export interface iInputSearchValue { 
+    search: string;
+};
+
+// Interface do Input Search
+export interface iInputSearch extends InputHTMLAttributes<HTMLInputElement> {
+    type: 'search';
+    placeholder: string;
+}

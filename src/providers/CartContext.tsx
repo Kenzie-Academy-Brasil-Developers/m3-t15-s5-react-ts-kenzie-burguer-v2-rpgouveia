@@ -97,7 +97,8 @@ function CartProvider({ children }: iContextProvider) {
             addProductToCart,
             removeProductFromCart,
             removeAllProductsFromCart,
-            filteredProducts
+            setSearch,
+            filteredProducts,
         }}
         >
             {children}
