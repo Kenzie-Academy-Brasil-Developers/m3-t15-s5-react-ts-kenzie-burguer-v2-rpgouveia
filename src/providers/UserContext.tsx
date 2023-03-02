@@ -2,7 +2,7 @@ import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { iAutoLoginResponse, iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
+import { iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
 import { api } from "../services/api";
 
 export const UserContext = createContext({} as iUserContext);
@@ -10,8 +10,6 @@ export const UserContext = createContext({} as iUserContext);
 function UserProvider({ children }: iContextProvider) {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<iUser | null>(null);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [autoLoginUser, setAutoLoginUser] = useState<iAutoLoginResponse | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,16 +23,14 @@ function UserProvider({ children }: iContextProvider) {
                             Authorization: `Bearer ${token}`,
                         }
                     };
-                    const response = await api.get<iAutoLoginResponse>(`/users/${userId}`, config);
-                    setAutoLoginUser(response.data);
+                    const response = await api.get<iUser>(`/users/${userId}`, config);
+                    setUser(response.data);
                     navigate('/shop');
                 } catch (error) {
                     localStorage.removeItem('@TOKEN');
                     localStorage.removeItem('USERID');
                 };
-            } else {
-                navigate('/')
-            }
+            };
         };
         autoLogin();
     }, []);
@@ -98,7 +94,7 @@ function UserProvider({ children }: iContextProvider) {
             user,
             userRegister,
             userLogin,
-            userLogout
+            userLogout,
         }}>
             {children}
         </UserContext.Provider>

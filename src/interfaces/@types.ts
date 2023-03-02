@@ -45,14 +45,6 @@ export interface iFormRegisterValues {
     confirmPassword: string;
 };
 
-export interface iAutoLoginResponse {
-    id: number;
-    email: string;
-    password: string;
-    name: string;
-    confirmPassword: string;
-}
-
 export type iFormLoginValues = Omit<iFormRegisterValues, 'name' | 'confirmPassword'>
 
 export interface iInput {
