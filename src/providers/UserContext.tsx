@@ -10,6 +10,7 @@ export const UserContext = createContext({} as iUserContext);
 function UserProvider({ children }: iContextProvider) {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<iUser | null>(null);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [autoLoginUser, setAutoLoginUser] = useState<iAutoLoginResponse | null>(null);
     const navigate = useNavigate();
 
