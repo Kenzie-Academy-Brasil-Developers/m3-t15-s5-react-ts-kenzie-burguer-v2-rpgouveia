@@ -51,10 +51,9 @@ function UserProvider({ children }: iContextProvider) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.data === 'Email already exists') {
                     toast.error('Email já existe')
-                } else if (error.response?.data === 'Password is too short') {
-                    toast.error('Senha é muito pequena')
                 } else {
-                    toast.error('Email e Senha são obrigatórios')
+                    // eslint-disable-next-line no-console
+                    console.error(error);
                 }
             }
         } finally {
@@ -73,9 +72,7 @@ function UserProvider({ children }: iContextProvider) {
             navigate('/shop');
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                if (error.response?.data === 'Email and password are required') {
-                    toast.error('Email e Senha são obrigatórios')
-                } else if (error.response?.data === 'Incorrect password') {
+                if (error.response?.data === 'Incorrect password') {
                     toast.error('Senha incorreta')
                 } else {
                     toast.error('Usuário não encontrado')
@@ -91,6 +88,7 @@ function UserProvider({ children }: iContextProvider) {
         localStorage.removeItem('@TOKEN');
         localStorage.removeItem('@USERID');
         navigate('/');
+        toast.success('Logout realizado com sucesso!')
     };
 
     return (

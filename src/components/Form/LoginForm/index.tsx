@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { loginFormSchema } from './loginFormSchema';
 import { iFormLoginValues } from '../../../interfaces/@types';
 import { UserContext } from '../../../providers/UserContext';
 import { StyledButton } from '../../../styles/button';
@@ -7,7 +9,12 @@ import { StyledForm } from '../../../styles/form';
 import Input from '../Input';
 
 function LoginForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm<iFormLoginValues>();
+  const { 
+    register, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm<iFormLoginValues>({ resolver: yupResolver(loginFormSchema) });
+
   const { userLogin } = useContext(UserContext);
   const submitForm: SubmitHandler<iFormLoginValues> = (formData) => {
     userLogin(formData);

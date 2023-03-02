@@ -51,11 +51,11 @@ function CartProvider({ children }: iContextProvider) {
             const addProductFounded = products.find(item => item.id === productId)
             if (addProductFounded) {
                 setCurrentSale([...currentSale, addProductFounded]);
-                toast.success('Produto adicionado'); // Funciona
-            } else {
-                toast.error('Produto já foi adicionado'); // Não funciona
+                toast.success('Produto adicionado');
             }
-        };
+        } else {
+            toast.error('Produto já foi adicionado');
+        }
     };
 
     function removeProductFromCart(productId: number) {

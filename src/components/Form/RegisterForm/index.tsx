@@ -1,5 +1,7 @@
 import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerFormSchema } from './registerFormSchema';
 import Input from '../Input';
 import { StyledButton } from '../../../styles/button';
 import { StyledForm } from '../../../styles/form';
@@ -7,7 +9,12 @@ import { iFormRegisterValues } from '../../../interfaces/@types';
 import { UserContext } from '../../../providers/UserContext';
 
 function RegisterForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm<iFormRegisterValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<iFormRegisterValues>({ resolver: yupResolver(registerFormSchema) });
+
   const { userRegister } = useContext(UserContext)
   const submitForm: SubmitHandler<iFormRegisterValues> = (formData) => {
     userRegister(formData);
