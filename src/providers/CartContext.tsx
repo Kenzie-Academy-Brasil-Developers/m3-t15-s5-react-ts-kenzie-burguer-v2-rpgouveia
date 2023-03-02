@@ -29,14 +29,14 @@ function CartProvider({ children }: iContextProvider) {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
-                }
-                const response = await api.get('/products', config);
+                };
+                const response = await api.get<iProduct[]>('/products', config);
                 setProducts(response.data);
             } catch (error) {
-                console.log(error);
-
-            }
-        }
+                // eslint-disable-next-line no-console
+                console.error(error);
+            };
+        };
         getAllProducts();
     }, []);
 
