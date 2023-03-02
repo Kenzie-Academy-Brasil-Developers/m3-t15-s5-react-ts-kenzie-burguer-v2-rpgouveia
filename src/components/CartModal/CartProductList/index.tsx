@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import CartProductCard from './CartProductCard';
 
 import { StyledCartProductList } from './style';
@@ -8,10 +8,6 @@ import { CartContext } from '../../../providers/CartContext';
 
 function CartProductList() {
   const { currentSale, cartTotal, removeAllProductsFromCart } = useContext(CartContext);
-
-  useEffect(() => {
-    console.log('On Update | currentSale: ', currentSale);
-  }, [currentSale])
 
   return (
     <StyledCartProductList>

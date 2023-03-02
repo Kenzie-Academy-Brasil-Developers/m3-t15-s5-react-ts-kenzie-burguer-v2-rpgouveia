@@ -1,5 +1,7 @@
+import axios from "axios";
 import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { iContextProvider, iFormLoginValues, iFormRegisterValues, iUser, iUserContext } from "../interfaces/@types";
 import { api } from "../services/api";
 
@@ -21,18 +23,14 @@ function UserProvider({ children }: iContextProvider) {
                             Authorization: `Bearer ${token}`,
                         }
                     };
-                    const response = await api.get(`/users/${userId}`, config);
+                    const response = await api.get<iUser>(`/users/${userId}`, config);
                     setUser(response.data);
                     navigate('/shop');
                 } catch (error) {
-                    console.log(error);
                     localStorage.removeItem('@TOKEN');
                     localStorage.removeItem('USERID');
                 };
-            } else {
-                // Proteção de rota, trocar por outlet
-                navigate('/')
-            }
+            };
         };
         autoLogin();
     }, []);
@@ -40,16 +38,20 @@ function UserProvider({ children }: iContextProvider) {
     async function userRegister(formData: iFormRegisterValues) {
         try {
             setLoading(true)
-            const response = await api.post('/users', formData);
-            setUser(response.data.user);
+            const response = await api.post<iUser>('/users', formData);
             localStorage.setItem('@TOKEN', response.data.accessToken);
             localStorage.setItem('@USERID', response.data.user.id);
-            // Futuro Toast de Sucesso Aqui!
-            console.log('Cadastro realizado com sucesso!');
+            toast.success('Cadastro realizado com sucesso!')
             navigate('/shop');
         } catch (error) {
-            console.log(error);
-            // Futuro Toast de Falha Aqui!
+            if (axios.isAxiosError(error)) {
+                if (error.response?.data === 'Email already exists') {
+                    toast.error('Email já existe')
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.error(error);
+                }
+            }
         } finally {
             setLoading(false);
         };
@@ -58,17 +60,20 @@ function UserProvider({ children }: iContextProvider) {
     async function userLogin(formData: iFormLoginValues) {
         try {
             setLoading(true);
-            const response = await api.post('/login', formData);
-            setUser(response.data.user);
+            const response = await api.post<iUser>('/login', formData);
+            setUser(response.data);
             localStorage.setItem('@TOKEN', response.data.accessToken);
             localStorage.setItem('@USERID', response.data.user.id);
-            // Futuro Toast de Sucesso Aqui!
-            console.log('Login realizado com sucesso!');
+            toast.success('Login realizado com sucesso!')
             navigate('/shop');
         } catch (error) {
-            console.log(error);
-            // Futuro Toast de Falha Aqui!
-            // Verificar como usar error.response.data
+            if (axios.isAxiosError(error)) {
+                if (error.response?.data === 'Incorrect password') {
+                    toast.error('Senha incorreta')
+                } else {
+                    toast.error('Usuário não encontrado')
+                }
+            }
         } finally {
             setLoading(false);
         };
@@ -79,6 +84,7 @@ function UserProvider({ children }: iContextProvider) {
         localStorage.removeItem('@TOKEN');
         localStorage.removeItem('@USERID');
         navigate('/');
+        toast.success('Logout realizado com sucesso!')
     };
 
     return (
@@ -88,7 +94,7 @@ function UserProvider({ children }: iContextProvider) {
             user,
             userRegister,
             userLogin,
-            userLogout
+            userLogout,
         }}>
             {children}
         </UserContext.Provider>
