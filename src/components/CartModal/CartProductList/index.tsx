@@ -20,6 +20,7 @@ function CartProductList() {
           category={item.category}
           price={item.price}
           img={item.img}
+          quantity={item.quantity}
         />))}
       </ul>
 
