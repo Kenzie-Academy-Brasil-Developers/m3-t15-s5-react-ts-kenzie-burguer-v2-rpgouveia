@@ -16,6 +16,7 @@ function ProductList() {
           category={product.category}
           price={product.price}
           img={product.img}
+          quantity={product.quantity}
         />)}
     </StyledProductList>
   )

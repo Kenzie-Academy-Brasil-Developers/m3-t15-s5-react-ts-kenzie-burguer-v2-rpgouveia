@@ -62,7 +62,7 @@ export interface iProduct {
     category: string;
     price: number;
     img: string;
-    quantity?: number;
+    quantity: number;
 };
 
 export interface iInputSearchValue { 
