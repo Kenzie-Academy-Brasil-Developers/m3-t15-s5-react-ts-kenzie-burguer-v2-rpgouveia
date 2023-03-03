@@ -76,7 +76,11 @@ function CartProvider({ children }: iContextProvider) {
         };
     };
 
-    const filteredProducts = products.filter(item => ( search === '' ? true : (item.name.toLowerCase()).includes(search.toLowerCase())))
+    const filteredProducts = products.filter(item => {
+        const nameMatch = (item.name.toLowerCase()).includes(search.toLowerCase());
+        const categoryMatch = (item.category.toLowerCase()).includes(search.toLowerCase());    
+        return search === '' ? true : (nameMatch || categoryMatch);
+    })
 
     return (
         <CartContext.Provider value={{
