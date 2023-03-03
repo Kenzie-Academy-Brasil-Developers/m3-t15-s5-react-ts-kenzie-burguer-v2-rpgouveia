@@ -7,6 +7,7 @@ interface IStyledContainerProps {
 export const StyledContainer = styled.div<IStyledContainerProps>`
   width: 100%;
   max-width: ${({ containerWidth }) =>
+    // eslint-disable-next-line no-unneeded-ternary
     containerWidth ? containerWidth : 1000}px;
   margin: 0 auto;
   padding: 10px;

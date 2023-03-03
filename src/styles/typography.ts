@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable default-case */
 import styled, { css } from 'styled-components';
 import BaseTitle from './components/BaseTitle';
 

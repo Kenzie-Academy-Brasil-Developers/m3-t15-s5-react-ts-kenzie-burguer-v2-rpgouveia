@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { MdDelete } from 'react-icons/md';
 
 import { StyledCartProductCard } from './style';
-import { StyledTitle } from '../../../../styles/typography';
+import { StyledParagraph, StyledTitle } from '../../../../styles/typography';
 import { CartContext } from '../../../../providers/CartContext';
 import { iProduct } from '../../../../interfaces/@types';
 
-function CartProductCard({id, name, img}: iProduct) {
+function CartProductCard({id, name, img, quantity}: iProduct) {
   const { removeProductFromCart } = useContext(CartContext);
 
   return (
@@ -15,9 +15,12 @@ function CartProductCard({id, name, img}: iProduct) {
         <img src={img} alt={name} />
       </div>
       <div className='contentBox'>
-        <StyledTitle tag='h3' $fontSize='three'>
-          {name}
-        </StyledTitle>
+        <div>
+          <StyledTitle tag='h3' $fontSize='three'>
+            {name}
+          </StyledTitle>
+          <StyledParagraph>x{quantity}</StyledParagraph>
+        </div>
         <button
           type='button'
           aria-label='Remover'
