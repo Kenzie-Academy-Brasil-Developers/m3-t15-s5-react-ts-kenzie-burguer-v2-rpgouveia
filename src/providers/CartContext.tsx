@@ -42,7 +42,10 @@ function CartProvider({ children }: iContextProvider) {
 
     useEffect(() => {
         localStorage.setItem("@HamburgueriaKenzie", JSON.stringify(currentSale));
-        const totalValue = currentSale.reduce((previousValue, currentValue) => previousValue + currentValue.price * currentValue.quantity, 0);
+        const totalValue = currentSale.reduce((previousValue, currentValue) => {
+            const quantity = currentValue.quantity ?? 0;
+            return previousValue + currentValue.price * quantity;
+        }, 0)
         setCartTotal(totalValue);
     }, [currentSale]);
 
@@ -51,26 +54,31 @@ function CartProvider({ children }: iContextProvider) {
         if (addProductFounded) {
             const productAlreadyInCart = currentSale.find((product) => product.id === productId);
             if (productAlreadyInCart) {
-                const updatedCart = currentSale.map((product) => product.id === productId ? { ...product, quantity: product.quantity + 1 } : product);
+                const updatedCart = currentSale.map((product) =>
+                    product.id === productId ? { ...product, quantity: (product.quantity ?? 0) + 1 } : product
+                );
                 setCurrentSale(updatedCart);
                 toast.success("Quantidade do produto atualizada");
             } else {
-                setCurrentSale([...currentSale, { ...addProductFounded, quantity: 1 }]);
+                const productToAdd = { ...addProductFounded, quantity: 1 };
+                setCurrentSale([...currentSale, productToAdd]);
                 toast.success("Produto adicionado");
-            };
-        };
-    };
+            }
+        }
+    }
 
     function removeProductFromCart(productId: number) {
         const productToRemove = currentSale.find((item) => item.id === productId) as iProduct;
-        if (productToRemove.quantity > 1) {
-            const updatedCart = currentSale.map((product) => product.id === productId ? { ...product, quantity: product.quantity - 1 } : product);
-            setCurrentSale(updatedCart);
-            toast.warning("Quantidade do produto atualizada");
-        } else {
-            const filteredCurrentSale = currentSale.filter((item) => item.id !== productId);
-            setCurrentSale(filteredCurrentSale);
-            toast.warning("Produto removido");
+        if (productToRemove) {
+            if (productToRemove.quantity && productToRemove.quantity > 1) {
+                const updatedCart = currentSale.map((product) => product.id === productId ? { ...product, quantity: (product.quantity ?? 0) - 1 } : product);
+                setCurrentSale(updatedCart);
+                toast.warning("Quantidade do produto atualizada");
+            } else {
+                const filteredCurrentSale = currentSale.filter((item) => item.id !== productId);
+                setCurrentSale(filteredCurrentSale);
+                toast.warning("Produto removido");
+            };
         };
     };
 
